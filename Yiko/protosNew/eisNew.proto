@@ -1,0 +1,299 @@
+syntax = "proto3";
+
+package eis;
+
+option go_package = "./;eis";
+
+service EIService {
+  rpc GetInteract(stream GetInteractRequest) returns (stream GetInteractResponse) {};
+}
+
+message GetInteractRequest {
+  oneof RequestPayload {
+    TextParams text_params = 1;
+    AudioParams audio_params = 2;
+  }
+}
+
+enum OpType {
+  NONE              = 0;
+  ASR               = 1;
+  ASR_NLP           = 2;
+  ASR_NLP_TTS       = 3;
+  NLP               = 4;
+  NLP_TTS           = 5;
+  TTS               = 6;
+  BAIDU_NLP_TTS     = 7;
+  UPDATE_PARAMS     = 8;
+  SAVE_ADC_AUDIO    = 9;
+  SAVE_AUDIO_COMMON = 10;
+}
+
+enum TtsServeType {
+  None = 0;
+  Databaker = 1;
+  Microsoft = 2;
+  Baidu = 3;
+}
+
+enum TtsAudioFormat {
+  TtsAudioNone = 0;
+  TtsAudioPcm  = 1;
+  TtsAudioMp3  = 2;
+}
+
+enum WakeupWord {
+  OkYiko = 0;
+  HelloXiaoke = 1;
+}
+
+message TextParams {
+  OpType op_type = 1;
+  string chat_bot_id = 2;
+  string user_id = 3;
+  string sentence = 4;
+  string type = 5;
+  string language = 6;
+  string state = 7;
+  string command = 8;
+  string from = 9;
+  BotInfo bot_info = 10;
+  repeated HumanInfo human_info = 11;
+  string params = 12;
+  float data_version = 13;
+  string session_id = 14;
+  string round_id = 15;
+  repeated HotWords hotwords = 16;
+  string fw_version = 17; // 硬件版本信息
+  SslInfo ssl_info = 18;
+  bool network_status = 19; // 网络状态
+  string tone = 20; // 音色
+  AuthInfo auth_info = 21;
+  int64 connect_timeout = 22;
+  int64 enable_timeout_callback = 23;
+  int64 server_timeout = 24;
+//  Position position = 25;
+  ChatBotInfo chat_bot_info = 26;
+  bool asr_realtime_result = 27;
+  TtsServeType tts_serve_type = 28;
+  TtsAudioFormat tts_audio_format = 29;
+  string audio_tag = 30; // 音频的种类，SDK 上传后保存到 oss 文件名
+  bool is_callback = 31; // 是否是客户端回调，传给 dm
+  WakeupInfo wakeup_info = 32; // 唤醒数据
+  AppInfo app_info = 33; // app 上传的数据
+  string app_user_id = 34;
+  string sdk_version = 35;
+  DeviceTaskInfo device_task_info = 36;
+  WakeupWord wakeup_word = 37;
+  bool save_user_audio = 38; // 是否保存用户音频(是否同意用户协议)
+  string user_agreement_version = 39; // 用户协议计划版本
+}
+
+message BotInfo {
+  string bot_id = 1;
+  string model_id = 2;
+  string res_id = 3;
+  string sn = 4;
+  string sc_from = 5;
+  string sc_id = 6;
+  string country = 7;
+  string tz = 8;
+  int64 time = 9;
+  int64 map_id = 10;
+  string iot = 12;
+  float location_x = 13;
+  float location_y = 14;
+  int64 slam = 15;
+  string wakeup_did = 16;
+}
+
+//message Position {
+//  int64 time = 1;
+//  int64 map_id = 2;
+//  float location_x = 3;
+//  float location_y = 4;
+//  int64 slam = 5;
+//}
+
+message HumanInfo {
+  string identity_id = 1;
+  bool is_talking = 2;
+  string gender = 3;
+  int32 age = 4;
+  string name = 5;
+  string emotion = 6;
+  string location = 7;
+  float gender_score = 8;
+  string age_group = 9;
+  float age_score = 10;
+}
+
+message HotWords {
+  repeated string words = 1;
+  string type = 2;
+}
+
+message SslInfo {
+  string ssl_path = 1; // 认证信息文件路径
+  string domain_name = 2; // 域名
+}
+
+message AuthInfo {
+  string password = 1;
+}
+
+message ChatBotInfo {
+  repeated string extra_knowledges = 1;
+}
+
+message WakeupInfo {
+  float wakeup_score = 1; // 唤醒分数
+  int64 work_status = 2; // 机器工作状态
+  bool is_on_disturb = 3; // 是否是免打扰时段
+  WakeupVersion wakeup_version = 4;
+}
+
+message AppInfo {
+  string home_id = 1;
+  string user_id = 2; // iot 用户ID，已有
+  string authorization = 3;
+  string platform = 4;
+  string lang = 5;
+  string app_ver = 6;
+  string channel = 7;
+  bool share = 8;
+  string did = 9;
+  string country = 10;
+  string ip = 11;
+  string location = 12;
+  string time = 13;
+  string tz = 14;
+  string uid = 15;  // uid是张枢的it id
+  string ucid = 16; // ucid是科沃斯用户中心ID
+  string reserved1 = 20; // 保留字段
+  string reserved2 = 21; // 保留字段
+  string reserved3 = 22; // 保留字段
+}
+
+message DeviceTaskInfo {
+  int64 robot_work = 1;
+  int64 station_work = 2;
+  int64 work_state = 3;
+  int64 cid = 4;
+  int64 content_cleancare = 5;
+  int64 content_efficiency = 6;
+  int64 content_fanlevel = 7;
+  int64 content_id = 8;
+  int64 content_mode = 9;
+  int64 content_status = 10;
+  int64 content_type = 11;
+  int64 content_water = 12;
+  int64 mid = 13;
+  int64 trigger = 14;
+  int64 type = 15;
+  int64 scid = 16;  // 定制清洁qccleanId
+}
+
+enum AudioType {
+  PCM = 0;
+  WAV = 1;
+  MP3 = 2;
+  OPUS = 3;
+}
+
+message AudioParams {
+  bool is_final = 1;
+  bytes audio = 2;
+  int32 sample_rate = 3;
+  AudioType audio_type = 4;
+  int32 channels = 5;
+  int32 sample_bytes = 6;
+  bool is_header = 7;
+  bool cancel = 8;
+}
+
+message GetInteractResponse {
+  int64 response_id = 1;
+  bool is_final = 2;
+  string response_type = 3;
+
+  string recognition_text = 10;
+  bytes recognition_audio = 11;
+  NLPResponse nlp_response = 12;
+  AudioType audio_type = 13;
+  string round_id = 14;
+  int32 eof = 15;
+  string asr_record_id = 16;
+  int64 tts_audio_duration = 17;
+  repeated string asr_other_text = 18;
+}
+
+message NLPResponse {
+  string department_id = 1;
+  string knowledgebase = 2;
+  string sentence = 3;
+  repeated Answer answer = 4;
+  string instruction = 5;
+  string source = 6;
+  string label = 7;
+  string group = 8;
+  float score = 9;
+  string intent = 10;
+  repeated string available_inputs = 11;
+  repeated string entities = 12;
+  string sim_query = 13;
+  repeated string suggests = 14;
+  string type = 15;
+  Callback callback = 16;
+  repeated string event = 17;
+  string command = 18;
+  string class = 19;
+  string mode = 20;
+  string request_type = 21;
+  string round_id = 22;
+  string session_id = 23;
+  int64 keep_listening = 24;
+  bool offline = 25;
+  bool clear_callbackqueue_tags = 26;
+  bool is_interruptible_tag = 27;
+  string bot_id = 28;
+  repeated string work_did = 29;
+  int64 qtime = 30;
+  int64 atime = 31;
+}
+
+message Answer {
+  string language = 1;
+  string text = 2;
+  string voice = 3;
+  string audio = 4;
+  string audio_id = 5;
+}
+
+message Callback {
+  string question = 1;
+  string type = 2;
+  int64 callbackDelay = 3;
+}
+
+message WakeupVersion {
+  string eis_wakeup_version = 1;
+  string wakeup_module_md5 = 2;
+  string wakeup_proto_md5 = 3;
+  string speaker_module_md5 = 4;
+  string speaker_proto_md5 = 5;
+}
+
+//message Command {
+//  string id = 1;
+//  string command_id = 2;
+//  repeated CommandParams params = 3;
+//}
+//
+//message CommandParams {
+//  string property = 1;
+//  string propertyUnit = 2;
+//  repeated string propertyValue = 3;
+//  string timeDuration = 4;
+//  string timeStart = 5;
+//}
