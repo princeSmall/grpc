@@ -1,0 +1,6 @@
+module Pods_GRPCEIS {
+  umbrella header "Pods-GRPCEIS-umbrella.h"
+
+  export *
+  module * { export * }
+}

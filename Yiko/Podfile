@@ -1,0 +1,11 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'GRPCEIS' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  
+  pod 'GRPCEIS', :path => '.'
+#  pod 'Protobuf','3.25.3'
+  # Pods for GRPCEIS
+
+end

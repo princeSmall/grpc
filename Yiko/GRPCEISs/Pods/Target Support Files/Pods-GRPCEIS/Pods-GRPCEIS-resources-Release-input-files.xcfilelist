@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-GRPCEIS/Pods-GRPCEIS-resources.sh
+${PODS_CONFIGURATION_BUILD_DIR}/Protobuf/Protobuf_Privacy.bundle
+${PODS_CONFIGURATION_BUILD_DIR}/gRPC/gRPCCertificates.bundle

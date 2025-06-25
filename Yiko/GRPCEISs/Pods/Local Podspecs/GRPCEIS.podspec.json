@@ -1,0 +1,60 @@
+{
+  "name": "GRPCEIS",
+  "version": "0.0.1",
+  "license": "Apache License, Version 2.0",
+  "authors": {
+    "gRPC contributors": "grpc-io@googlegroups.com"
+  },
+  "homepage": "https://grpc.io/",
+  "summary": "HelloWorld example",
+  "source": {
+    "git": "https://github.com/grpc/grpc.git"
+  },
+  "platforms": {
+    "ios": "10.0",
+    "osx": "10.12"
+  },
+  "dependencies": {
+    "!ProtoCompiler-gRPCPlugin": [
+      "~> 1.0"
+    ]
+  },
+  "prepare_command": "mkdir -p Pods/GRPCEIS\nPods/!ProtoCompiler/protoc         --plugin=protoc-gen-grpc=Pods/!ProtoCompiler-gRPCPlugin/grpc_objective_c_plugin         --objc_out=Pods/GRPCEIS         --grpc_out=Pods/GRPCEIS         -I ../protosNew         -I Pods/!ProtoCompiler         ../protosNew/eisNew.proto",
+  "pod_target_xcconfig": {
+    "GCC_PREPROCESSOR_DEFINITIONS": "$(inherited) GPB_USE_PROTOBUF_FRAMEWORK_IMPORTS=1",
+    "CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES": "YES"
+  },
+  "subspecs": [
+    {
+      "name": "Messages",
+      "source_files": [
+        "Pods/GRPCEIS/*.pbobjc.{h,m}",
+        "Pods/GRPCEIS/**/*.pbobjc.{h,m}"
+      ],
+      "header_mappings_dir": "Pods/GRPCEIS",
+      "requires_arc": false,
+      "dependencies": {
+        "Protobuf": [
+
+        ]
+      }
+    },
+    {
+      "name": "Services",
+      "source_files": [
+        "Pods/GRPCEIS/*.pbrpc.{h,m}",
+        "Pods/GRPCEIS/**/*.pbrpc.{h,m}"
+      ],
+      "header_mappings_dir": "Pods/GRPCEIS",
+      "requires_arc": true,
+      "dependencies": {
+        "gRPC-ProtoRPC": [
+
+        ],
+        "GRPCEIS/Messages": [
+
+        ]
+      }
+    }
+  ]
+}
